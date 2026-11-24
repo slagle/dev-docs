@@ -1,46 +1,41 @@
-# RHOSP 17 to RHOSO 18: operations quick reference
+# OSP 17 to RHOSO 18: Operational quick reference
 
-For operators moving familiar director workflows to Red Hat OpenStack Services
-on OpenShift (RHOSO). Day 2 comes first; this is an operation lookup, not an
-architecture introduction or a set of complete, certified runbooks.
-
-Tracking: [OSPRH-32100](https://redhat.atlassian.net/browse/OSPRH-32100).
-
-**Scope:** RHOSP **17.1** is the command and workflow baseline. Do not assume
-every 17.0 procedure is identical. The [17.1 overcloud CLI][osp-overcloud],
-[TripleO CLI][osp-tripleo], and [director scaling procedure][osp-scaling] provide
-the source-side context. The [appendix](#command-inventory) accounts for every
-registered TripleO entrypoint in the local 17.1 source snapshot, including
-deprecated commands; registration does not establish product support.
+Management operations differ greatly between OSP17 and RHOSO 18. This document
+is meant to serve as a quick reference of those differences. It is not meant to
+serve as full documentation for RHOSO 18 managent operations. Links are
+provided to the full RHOSO 18 docs where appropriate.
 
 ## Read before using the examples
 
-* Commands and numbered steps below are **abbreviated**, not safe copy-and-paste
-  change plans. Use the linked procedure for prerequisites, ordering, supported
-  topology, outage implications, verification, and recovery.
+> Note: Below, **NodeSet** means `OpenStackDataPlaneNodeSet`, **Deployment** means
+  `OpenStackDataPlaneDeployment`, and **BMH** means `BareMetalHost`.
+
+* Commands and numbered steps for procedures below are **abbreviated**, not
+  safe copy-and-paste change plans. Use the linked procedure for the full
+  details, including prerequisites, support and outage implications,
+  verification, and recovery.
 * Examples assume namespace `openstack`. Replace `<placeholders>` and prepare
   named YAML files from the **linked product documentation**, adjusted to your
   deployment. No example YAML file is supplied here. Keep cluster-scoped objects
-  such as `NodeNetworkConfigurationPolicy` (NNCP) separate from namespaced CRs.
-* `oc` uses OpenShift credentials. Run OpenStack API commands in the operator-created
-  client pod with `oc rsh -n openstack openstackclient`, using its configured
-  Keystone authentication. An OpenShift token is **not** a Keystone credential.
-* Data plane reconfiguration requires a **fresh, uniquely named**
-  `OpenStackDataPlaneDeployment` CR targeting the appropriate node sets. Merely
-  changing an `OpenStackDataPlaneNodeSet`, or reapplying a completed Deployment,
-  does **not** rerun Ansible. Each occurrence of `oc create -f <deployment.yaml>`
-  below means a new CR name and a procedure-specific service selection.
+  separate from namespaced CRs.
+* `oc` uses OpenShift credentials. Run OpenStack API commands in the operator created
+  openstackclient pod with `oc rsh -n openstack openstackclient`, using its configured
+  authentication.
+* Data plane reconfiguration requires a new and uniquely named
+  `OpenStackDataPlaneDeployment` CR targeting the appropriate node sets. Only
+  changing an `OpenStackDataPlaneNodeSet`, or reapplying a completed
+  Deployment, does **not** rerun Ansible. Each occurrence of `oc create -f
+  <deployment.yaml>` below implies a Deployment with a newname and a
+  procedure-specific set of services.
 * OpenShift **worker nodes** host control plane pods; EDPM **RHEL data plane
   nodes** are different hosts. Use documented SSH access for EDPM troubleshooting,
   not `oc debug node`. OpenShift node maintenance follows the matching OpenShift
   release documentation, not an EDPM procedure.
 * **N/A** means no direct command/workflow equivalent, not necessarily that the
-  operational objective is unsupported. Check the installed RHOSO 18.0
-  maintenance release and its release notes, especially for backup/restore,
+  management operation is unsupported. Check the installed RHOSO 18.0 release
+  documentation and corresponding release notes, especially for backup/restore,
   Instance HA, and HCI features.
 
-Below, **NodeSet** means `OpenStackDataPlaneNodeSet`, **Deployment** means
-`OpenStackDataPlaneDeployment`, and **BMH** means `BareMetalHost`.
 
 ## Day 2: everyday operation and change
 
