@@ -5,6 +5,7 @@ Developer Documentation related to podified controlplane.
 * [Conditions usage](conditions.md)
 * [Observed generation](observed_generation.md)
 * [Common issues](common_issues.md)
+* [RHOSP 17 to RHOSO 18 operations quick reference](rhoso-17-vs-18-operations.md)
 * [Implementation Guidelines](developer.md)
 * [Quickstart on writing KUTTL tests for an operator](kuttl_tests.md)
 * [Building operator images](image_build.md)
